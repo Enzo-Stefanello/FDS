@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -46,6 +47,35 @@ public class Controller {
     public List<String> getListaTitulos() {
         return livros.stream()
                 .map(l -> l.getTitulo())
+                .toList();
+    }
+
+    // a) LivrosPorAno?ano=<valor> → devolve a lista dos livros publicados no ano indicado usando uma query string
+    @GetMapping("/ano/{ano}")
+    @CrossOrigin(origins = "*")
+    public List<Livro> getAno(@PathVariable(value = "ano") int ano) {
+        return livros.stream()
+                .filter(livro -> livro.getAno() == ano)
+                .toList();
+    }
+
+    // b) Desatualizados/{ano} → devolve a lista dos livros cujo ano de publicação é inferior ao ano informado
+    @GetMapping("/desatualizados/{ano}")
+    @CrossOrigin(origins = "*")
+    public List<Livro> getDesatualizados(@PathVariable(value = "ano") int ano) {
+        return livros.stream()
+                .filter(livro -> livro.getAno() < ano)
+                .toList();
+    }
+
+    //c) Crie uma rota que permita consultar todos os livros de um determinado autor publicados em um determinado ano
+    @GetMapping("/autor/{autor}/ano/{ano}")
+    @CrossOrigin(origins = "*")
+    public List<Livro> getAutorAno(@PathVariable(value = "autor") String autor, 
+                                    @PathVariable(value = "ano") int ano) {
+        return livros.stream()
+                .filter(livro -> livro.getAutor().equals(autor))
+                .filter(livro -> livro.getAno() == ano)
                 .toList();
     }
 }
