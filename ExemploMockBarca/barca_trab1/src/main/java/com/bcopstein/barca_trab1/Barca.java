@@ -42,12 +42,7 @@ public class Barca {
         if (total_passageiros >= 100 && total_passageiros < 200 && (fileira < 40 || fileira > 60)) {
             return -3.0;  // Para os próximos 100 passageiros, só podem ocupar fileiras 40 a 60
         }
-
-        // Para os passageiros após os 200 primeiros, qualquer fileira é válida
-        if (total_passageiros >= 200) {
-            // Nenhuma verificação adicional, qualquer lugar disponível é permitido
-        }
-
+    
         // Marca o assento como ocupado
         ocupado[fileira - 1][assento - 1] = true;
         total_passageiros++;
