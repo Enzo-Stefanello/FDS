@@ -14,12 +14,10 @@ public class Barca {
 
     // Método que define o assento e retorna o preço
     public double defineAssento(String assentoInformado) {
-
         // Valida se o assento informado é válido
         if (assentoInformado == null || !assentoInformado.matches("F\\d{2}A\\d{2}")) {
             return -1.0;  // Assento inválido
         }
-
         // Extrai o número da fileira e o assento
         int fileira = Integer.parseInt(assentoInformado.substring(1, 3)); // Ex. F02 -> 2
         int assento = Integer.parseInt(assentoInformado.substring(4, 6)); // Ex. A12 -> 12
@@ -28,30 +26,20 @@ public class Barca {
         if (fileira < 1 || fileira > 60 || assento < 1 || assento > 20) {
             return -1.0;  // Assento inválido
         }
-
         // Verifica se o assento está ocupado
         if (ocupado[fileira - 1][assento - 1]) {
             return -2.0;  // Assento ocupado
         }
-
         // Verifica as regras de distribuição de peso
         if (total_passageiros < 100 && (fileira < 1 || fileira > 20)) {
             return -3.0;  // Para os primeiros 100 passageiros, só podem ocupar fileiras 1 a 20
         }
-
         if (total_passageiros >= 100 && total_passageiros < 200 && (fileira < 40 || fileira > 60)) {
             return -3.0;  // Para os próximos 100 passageiros, só podem ocupar fileiras 40 a 60
         }
-
-        // Para os passageiros após os 200 primeiros, qualquer fileira é válida
-        if (total_passageiros >= 200) {
-            // Nenhuma verificação adicional, qualquer lugar disponível é permitido
-        }
-
         // Marca o assento como ocupado
         ocupado[fileira - 1][assento - 1] = true;
         total_passageiros++;
-
         // Calcula o preço da passagem baseado no horário
         return calcularPrecoPorHorario();
     }
@@ -61,9 +49,8 @@ public class Barca {
         int hora = relogio.getHora();
         int minuto = relogio.getMinuto();
         double precoFinal;
-
         // Horário comercial padrão (08:00 - 12:00 e 14:00 - 18:00)
-        if ((hora >= 8 && minuto == 0 && hora <= 12 && minuto == 0) || (hora >= 14 && minuto == 0 && hora <= 18 && minuto == 0)) {
+        if ((hora >= 8 && minuto >= 0 && hora <= 12 && minuto >= 0) || (hora >= 14 && minuto >= 0 && hora <= 18 && minuto >= 0)) {
             precoFinal = precoBase;
         }
         // Faixa de 12:01 às 13:59 (10% a mais)
@@ -86,8 +73,6 @@ public class Barca {
         else {
             precoFinal = precoBase;
         }
-
-        // Retorna o valor formatado com 2 casas decimais
         return Double.parseDouble(String.format("%.2f", precoFinal));
     }
 

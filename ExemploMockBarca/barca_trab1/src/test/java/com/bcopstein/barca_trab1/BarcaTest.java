@@ -42,7 +42,7 @@ public class BarcaTest {
         double resultado = barca.defineAssento(assento == null ? null : assento);
         assertEquals(esperado, resultado);
     }
-
+    
     // Testa tentativa de ocupar um assento já ocupado
     @Test
     void testAssentoOcupado() {
