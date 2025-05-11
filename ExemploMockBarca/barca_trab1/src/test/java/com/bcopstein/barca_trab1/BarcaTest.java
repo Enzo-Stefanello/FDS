@@ -79,6 +79,16 @@ public class BarcaTest {
 
         assertEquals(100.0, barca.defineAssento("F33A01")); // qualquer lugar permitido
     }
+    @Test
+    void testAssentoNasBordasPermitidas() {
+        // Passageiro 0 a 99 – fileiras 1 a 20
+        assertEquals(100.0, barca.defineAssento("F01A01")); // mínimo
+        assertEquals(100.0, barca.defineAssento("F20A01")); // máximo
+    }
+    @Test
+    void testAssentoNulo() {
+        assertEquals(-1.0, barca.defineAssento(null));
+    }
 
     // Testa cálculo de preço da passagem com base no horário
     @ParameterizedTest

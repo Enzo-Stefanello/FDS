@@ -50,7 +50,7 @@ public class Barca {
         int minuto = relogio.getMinuto();
         double precoFinal;
         // Horário comercial padrão (08:00 - 12:00 e 14:00 - 18:00)
-        if ((hora >= 8 && minuto >= 0 && hora <= 12 && minuto >= 0) || (hora >= 14 && minuto >= 0 && hora <= 18 && minuto >= 0)) {
+        if ((hora >= 8 && minuto >= 0 && hora <= 12 && minuto == 00) || (hora >= 14 && minuto >= 0 && hora <= 18 && minuto == 0)) {
             precoFinal = precoBase;
         }
         // Faixa de 12:01 às 13:59 (10% a mais)
