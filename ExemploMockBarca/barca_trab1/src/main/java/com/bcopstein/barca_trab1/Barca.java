@@ -13,6 +13,7 @@ public class Barca {
 
     public double defineAssento(String assentoInformado) {
 
+        // leitura assentos e fileiras
         if (assentoInformado == null || !assentoInformado.matches("F\\d{2}A\\d{2}")) {
             return -1.0;
         }
@@ -20,38 +21,38 @@ public class Barca {
         int fileira = Integer.parseInt(assentoInformado.substring(1, 3)); // extrai numeros ex. F02
         int assento = Integer.parseInt(assentoInformado.substring(4, 6)); // extrai numeros ex. A02
 
+        // erros
         if (fileira < 1 || fileira > 60 || assento < 1 || assento > 20) {
-            return -1.0;
+            return -1.0; // invalido
         }
 
         if (ocupado[fileira - 1][assento - 1]) {
-            return -2.0;
+            return -2.0; // ocupado
 
         }
 
-        if (total_passageiros < 100 && (fileira < 1 || fileira > 20) ||
-                totalPassageiros >= 100 && totalPassageiros < 200 && (fileira < 40 || fileira > 60)) {
-            return -3.0;
+        if ((total_passageiros < 100 && (fileira < 1 || fileira > 20)) ||
+                (total_passageiros >= 100 && total_passageiros < 200 && (fileira < 40 || fileira > 60))) {
+            return -3.0; // bloqueado
         }
 
-        ocupados[fileira - 1][assento - 1] = true;
-        total_passageiros++;
+        // add
+        int hora = relogio.getHora();
+        int minuto = relogio.getMinuto();
+        double preco;
 
-        if (relogio.getHora() >= 8 && relogio.getHora() <= 12 || relogio.getHora() >= 14 && relogio.getHora() <= 18) {
-            return precoBase;
+        if ((hora >= 8 && hora < 12) || (hora >= 14 && hora < 18)) {
+            preco= precoBase; // Horário comercial
+        } else if ((hora == 12 && minuto >= 1) || (hora == 13) ||
+                (hora == 18 && minuto >= 1) || (hora == 19)) {
+            preco= precoBase * 1.10; // 10% mais caro
+        } else if (hora >= 20 && hora <= 23) {
+            preco= precoBase * 1.20; // 20% mais caro
+        } else {
+            preco= precoBase * 1.50; // Madrugada
         }
-        if (relogio.getHora() >= 12 && relogio.getMinuto() >= 1 || relogio.getHora() >= 13 && relogio.getMinuto() <= 59) {
-            return precoBase * 1.1;
-        }
-        if (relogio.getHora() >= 18 && relogio.getMinuto() >= 1 || relogio.getHora() >= 19 && relogio.getMinuto() <= 59) {
-            return precoBase * 1.1;
-        }
-        if(relogio.getHora() >= 20 && relogio.getHora() <= 23 && relogio.getMinuto() <=59) {
-            return precoBase * 1.2;
-        }
-        if(relogio.getHora() >= 00 && relogio.getHora() <= 7 && relogio.getMinuto() <=59) {
-            return precoBase * 1.5;
-        }
+
+        return Math.round(preco * 100.0) / 100.0; //apenas duas casas dps virgula
     }
 
     public void ocupacaoArbitraria(String assentoInformado) {
@@ -62,8 +63,8 @@ public class Barca {
         int assento = Integer.parseInt(assentoInformado.substring(4, 6));
 
         if (fileira >= 1 && fileira <= 60 && assento >= 1 && assento <= 20) {
-            if (!ocupados[fileira - 1][assento - 1]) {
-                ocupados[fileira - 1][assento - 1] = true;
+            if (!ocupado[fileira - 1][assento - 1]) {
+                ocupado[fileira - 1][assento - 1] = true;
                 total_passageiros++;
             }
         }
